@@ -24,6 +24,7 @@ class PlayerData:
         self.all_guesses = []
         self.players_who_guessed_you_correct = []
         self.players_who_guessed_you_incorrect = [] # TODO: IMPLEMENT THIS
+        self.player_people_thought_was_you = None # TODO: IMPLEMENT THIS
 
     def __str__(self):
         player_name = f"\nName:  {self.name}\n"
@@ -38,15 +39,6 @@ class PlayerData:
         songs_submitted = f"You submitted songs with indices: {self.song_numbers}"
         return player_name + music_league_week + player_was_guessed + player_correct_guesses + player_was_guessed_correctly + guessed_others_correct_list + guessed_others_wrong_list + all_players_guessed + who_guessed_you + songs_submitted
     
-# OTHER TODO's after I collect all the data:
-    # Determine who was guessed correctly
-        # the most
-        # The least
-    # Determine who the best guesser was (and list the amount of weeks that)
-        # 4: Capture the person that most people usually guess as you 
-            # (when this player's name appears and is guessed wrong. create dict to increment 
-            # the count of other player's name who actually submitted the song)
-
 # Global dictionary which contains PlayerData objects
 _players = {} # K: player name; V:List where each entry in the list corresponds to a PlayerData objects for a given week
 
@@ -65,18 +57,26 @@ def format_music_league_data(music_data_file):
 
     print('\nNames:\n', player_names)
 
-# Week specific parsing
+# Week specific CSV parsing
+    # TODO: can collect more data by using song name information
+        # Then hitting Spotify's API to get more info about that song
     week_number = CURRENT_WEEK
     process_weekly_csv_data(week_number, df)
 
-    # At this point we have gathered everyone's guesses for this week... 
-        # do extra parsing on the playerData objs to determine who guessed you incorrectly
-            # TODO: to determine who most people confused you with (this week)
-            # then go to YOUR columns and 
+# Week Specific Player Data Parsing   
+    # OTHER TODO's after I collect all the data:
+    # Determine who was guessed correctly
+        # the most
+        # The least
+    # Determine who the best guesser was (and list the amount of weeks that)
+        # 4: Capture the person that most people usually guess as you 
+            # (when this player's name appears and is guessed wrong. create dict to increment 
+            # the count of other player's name who actually submitted the song)
     process_weekly_player_data(week_number)
 
-    print_player_info()
 
+    print_player_info()
+    # TODO: Maybe use MatPlotLib to create graphs for each players statistics
     return None
 
 #
@@ -122,7 +122,12 @@ def process_weekly_csv_data(week_number, df):
         new_player_data = PlayerData(player_name)
 
         # Determine total times player was guessed this week (Historically can be more than 2... even though... whatever idc)
-        counts = sum(current_week_df[column].str.count(player_name).sum() for column in PLAYER_GUESS_COLS)
+        counts = sum(current_week_df[column].str.count(player_name).sum() for column in PLAYER_GUESS_COLS) 
+            # TODO: Update this to no longer use "PLAYER_GUESS_COLS", so we can remove this hard-coded list
+            #   Maybe update the current_week_df to only have the columns with song guesses
+            # THEN use this same kind of current_week_df[column].str.count(player_name).sum() logic
+            # or something similar to it in order to get the correct count
+
         new_player_data.total_times_player_was_guessed = counts
         new_player_data.week = week_number
 
