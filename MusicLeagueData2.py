@@ -68,15 +68,15 @@ def format_music_league_data(music_data_file):
     # Determine who was guessed correctly
         # the most
         # The least
-    # Determine who the best guesser was (and list the amount of weeks that)
-        # 4: Capture the person that most people usually guess as you 
-            # (when this player's name appears and is guessed wrong. create dict to increment 
-            # the count of other player's name who actually submitted the song)
+    # Determine who the best guesser was
+
+    # TODO: After collecting ALL data (including spotify)
+        # FIND A WAY TO USE TENSORFLOW?!?
     process_weekly_player_data(week_number)
 
 
     print_player_info()
-    # TODO: Maybe use MatPlotLib to create graphs for each players statistics
+    # TODO: Maybe use MatPlotLib to create fun graphs for each players statistics
     return None
 
 #
