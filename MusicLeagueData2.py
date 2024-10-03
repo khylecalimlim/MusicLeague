@@ -1,11 +1,14 @@
 import sys
 import pandas as pd
 import matplotlib.pyplot as plt
-import PROJECTS.MusicLeague.constants as constants
+import constants as constants
 from player_data import PlayerData
  
 # Global dictionary which contains PlayerData objects
-_players = {} # K: player name; V:List where each entry in the list corresponds to a PlayerData objects for a given week
+#_players = {} # K: player name; V:List where each entry in the list corresponds to a PlayerData objects for a given week
+_players = {}
+# player name: 
+    # Nested Dict = {Week Number: PlayerData object)
 
 #  
 # Main function which runs the logic to parse and manipulate data
@@ -20,7 +23,8 @@ def format_music_league_data(music_data_file):
     # Map each player's name to a list which will eventually hold a PlayerData Object for each week
     player_names = df['Who are you?'].unique()
     for name in player_names:
-        _players[name] = []
+        #_players[name] = []
+        _players[name] = {}
 
     print('\nNames:\n', player_names)
 
@@ -37,7 +41,8 @@ def format_music_league_data(music_data_file):
     # TODO:
     process_weekly_player_data(week_number)
 
-    print_player_info()
+    #print_all_player_info()
+    print_weekly_player_info(week_number)
     # TODO: Maybe use MatPlotLib to create fun graphs for each players statistics
     return None
 
@@ -47,9 +52,9 @@ def format_music_league_data(music_data_file):
 #
 def process_weekly_player_data(week_number):
     # When I know what metadata I need then collect it
-    # for curr_player_name in _players.keys():
-    #     curr_player_datas_list = _players[curr_player_name]
-    #     for curr_player_week_data in curr_player_datas_list:
+    for curr_player_name in _players.keys():
+        curr_player_datas_list = _players[curr_player_name]
+    #    for curr_player_week_data in curr_player_datas_list:
     #         if curr_player_week_data.week == week_number:
     #             pass
 
@@ -141,7 +146,9 @@ def process_weekly_csv_data(week_number, df):
         new_player_data.players_guessed_correctly = correctly_guessed_players
         new_player_data.players_guessed_incorrectly = incorrectly_guessed_players
         new_player_data.all_guesses = all_people_guessed
-        _players[player_name].append(new_player_data)
+       # _players[player_name].append(new_player_data)
+        nested_dict = _players[player_name]
+        nested_dict[week_number] = new_player_data
     return
 
 # Function to count occurrences of a string in a Series
@@ -149,14 +156,27 @@ def count_occurrences(series, string):
     return series.str.count(string).sum()
 
 # Function to display information for each player
-def print_player_info():
+def print_all_player_info():
     for player_name in _players.keys():
         # Get all the PlayerData objects for a given player
-        all_player_info = _players[player_name]
-        print("\nDisplaying player info for ", player_name)
-        print(f"Found {len(all_player_info)} PlayerData object(s)...")
-        for player_data in all_player_info:
-            print(player_data)
+        all_player_info_dict = _players[player_name]
+        print("\nDisplaying ALL player info for ", player_name)
+        print(f"Found {len(all_player_info_dict.keys())} PlayerData object(s)...")
+        for round_number in range(constants.NUM_ROUNDS):
+            week_number = round_number + 1
+            if week_number in all_player_info_dict.keys():
+                print(all_player_info_dict[week_number])
+    return
+
+# Function to display information for each player for a given week
+def print_weekly_player_info(week_number):
+    for player_name in _players.keys():
+        # Get all the PlayerData objects for a given player
+        all_player_info_dict = _players[player_name]
+        if week_number in all_player_info_dict.keys():
+            print("\nDisplaying player info for ", player_name)
+            print(all_player_info_dict[week_number])
+
     return
 
 # Run it
