@@ -1,0 +1,23 @@
+Weekly Player Data Stuff 
+- Find out the song(s) that was the easiest to guess
+- Find out the song(s) that was the hardest to guess
+- Determine the player with the most correct guesses
+- Determine the player with the least correct guesses
+- Determine the player that was guessed correctly the most
+- Determine the player that was guessed incorrectly the most
+
+* Note: Above I used the word "Determine" for data that is being stored in the PlayerData Objects
+        and I used the words "Find out" for data that I still need to figure out how to parse using the data frame
+
+Determine fun ways to display the information we have now formatted into objects
+- This probably means using MatPlotLib to show graphs
+    - Bar graph of the number of guesses people got correct (where the max of the graph is the number of songs submitted... or just 14)
+
+- Create an output file to paste into the chat for specifics on Player's guesses
+    - This might just be me printing each player info data
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+EXTRA STUFF:
+    - Use Spotify API to collect more data about the playlist / songs
+    - Incorporate Tensorflow... somehow... for some reason
